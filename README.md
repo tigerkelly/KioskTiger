@@ -20,7 +20,7 @@ Once installed you can use the following command to disable the X11 and Wayland 
 	
 	System Options -> Boot / Auto login -> Console Autologin
  
- Or use comman line
+ Or use command line
 
  	sudo update-rc.d lightdm disable
 
