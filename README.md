@@ -1,12 +1,18 @@
 # KioskTiger
 A RPi Kiosk mode without X11 or Wayland using Javafx webview.
 
-This should work on RPI 3/4/5 with raspian 64bit OS and Lite OS.
+This should work on RPI 3/4/5 with raspian 64bit OS.
 
 This code uses the JavaFX WebView widget and the Monocle/glass feature of Java 11.
 No need to have X11 or Wayland installed.  This uses the Linux frame buffer instead of X11 or Wayland.
 
 For the RPi 4 SBC use the Raspian 64 bit OS.  You can find many online tutorials on how to install it.
+
+The update your OS.
+
+	sudo apt update
+ 	sudo apt -y full-upgrade
+  	sudo reboot
 
 Once installed you can use the following command to disable the X11 and Wayland GUI interface. Only needed if you choose
 an OS with X11 or Wayland installed.
