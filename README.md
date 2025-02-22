@@ -22,7 +22,7 @@ Once installed you can use the following command to disable the X11 and Wayland 
  
  Or use comman line
 
- 	sudo
+ 	sudo update-rc.d lightdm disable
 
 The Java version has to be version 11, use the following link to get it. Later versions do not have Monocle/glass :(
 
