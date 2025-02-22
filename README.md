@@ -8,7 +8,8 @@ No need to have X11 or Wayland installed.  This uses the Linux frame buffer inst
 
 For the RPi 4 SBC use the Raspian 64 bit OS.  You can find many online tutorials on how to install it.
 
-Once installed you can use the following command to disable the X11 and Wayland GUI interface.
+Once installed you can use the following command to disable the X11 and Wayland GUI interface. Only needed if you choose
+an OS with X11 or Wayland installed.
 
 	sudo raspi-config
 	
