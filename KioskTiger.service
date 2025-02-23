@@ -1,0 +1,11 @@
+[Unit]
+Description=KioskTiger autostart
+After=multi-user.target
+
+[Service]
+type=simple
+ExecStart=/home/pi/KioskTiger/kiosktiger.sh
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target

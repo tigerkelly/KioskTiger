@@ -1,0 +1,12 @@
+
+export XCURSOR_SIZE=16
+
+x=$(figlet KioskTiger)
+printf "\033[94m$x\033[0m\n"
+
+t=$(tty)
+
+if [ "$t" == "/dev/tty1" ]; then
+       /home/pi/KioskTiger/kiosktiger.sh
+       echo KioskTiger
+fi
