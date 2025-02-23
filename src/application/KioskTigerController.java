@@ -10,8 +10,11 @@ import java.util.ResourceBundle;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
+import javafx.scene.input.TouchEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.HBox;
+import javafx.scene.robot.Robot;
 import javafx.scene.web.WebView;
 
 public class KioskTigerController implements Initializable {
@@ -19,23 +22,31 @@ public class KioskTigerController implements Initializable {
     @FXML
     private AnchorPane aPane;
     
-    private VBox vboxMain = null;
+    @FXML
+    private HBox hboxMain = null;
+    
+    @FXML
+    private WebView webView;
+    
+    private Robot robot;
     private String kioskHtml = null;
     private String kioskUrl = null;
+    
+    @FXML
+    void hideMouse(TouchEvent event) {
+    	webView.setCursor(Cursor.NONE);		// Keep the mouse cursor hidden.
+    }
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		
+		robot = new Robot();
+		robot.mouseMove(0, 0);
+		aPane.setCursor(Cursor.NONE);
+		hboxMain.setCursor(Cursor.NONE);
+		webView.setCursor(Cursor.NONE);
+		
 		loadConfig();		// Load kiosktiger.conf file.
-		
-		WebView webView = new WebView();
-		VBox.getVgrow(webView);
-		
-		vboxMain = new VBox();
-		
-		vboxMain.getChildren().add(webView);
-		
-		aPane.getChildren().add(vboxMain);
 		
 		if (kioskHtml != null) {		// local web pages.
 			String html = null;
