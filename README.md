@@ -56,7 +56,7 @@ Create a directory call KioskTiger in your home directory.
 
 	sudo cp /home/pi/work/KioskTiger/KisokTiger.service /etc/systemd/system/
 	sudo systemctl enable KioskTiger.service
-	sudo systemctl start KioskTiger.dervice
+	sudo systemctl start KioskTiger.service
 
 	sudo apt install -y vim figlet
 
