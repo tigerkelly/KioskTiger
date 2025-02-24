@@ -4,7 +4,7 @@ A RPi Kiosk mode without X11, Wayland and Chromimum using Javafx webview.
 This should work on RPI 4/5 with raspian 64bit full OS.
 
 This code uses the JavaFX WebView widget and the Monocle/glass feature of Java 11.
-No need to have X11 or Wayland installed.  This uses the Linux frame buffer instead of X11 or Wayland.
+This uses the Linux frame buffer instead of X11 or Wayland.
 
 For the RPi 4 SBC use the Raspian 64bit full OS.  You can find many online tutorials on how to install it.
 
