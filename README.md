@@ -20,9 +20,9 @@ Once installed you can use the following command to disable the X11 and Wayland 
 	
 	System Options -> Boot / Auto login -> Console Autologin
  
- Or use command line
+ Or use command line.
 
- 	sudo update-rc.d lightdm disable
+	sudo update-rc.d lightdm disable
 
 The Java version has to be version 11, use the following link to get it. Later versions do not have Monocle/glass :(
 
@@ -39,22 +39,27 @@ Create a work directory.
 	mkdir work
 	cd work
 	git clone https://github.com/tigerkelly/KioskTiger.git
-	cd ~/
+	cd KioskTiger
+	
+Create home directory for KisokTiger.
+
+	mkdir ~/KisokTiger
 	
 Create a directory call KioskTiger in your home directory.
 
-	dos2unix /home/pi/work/KioskTiger/profile_start.txt
-	dos2unix /home/pi/work/KioskTiger/KioskTiger.service
-	dos2unix /home/pi/work/KioskTiger/kiosktiger.sh
-	dos2unix /home/pi/work/KioskTiger/kiosktiger.conf
-	cat /home/pi/work/KioskTiger/profile_start.txt >> ~/.profile
-	cp /home/pi/work/KioskTiger/vimrc ~/.vimrc
-	cp /home/pi/work/KioskTiger/KioskTiger.html ~/KioskTiger
-	cp /home/pi/work/KioskTiger/kiosktiger.sh ~/KioskTiger
-	sudo chmod 755 /home/pi/KioskTiger/kiosktiger.sh
-	cp /home/pi/work/KioskTiger/KioskTiger.conf ~/KioskTiger
+	dos2unix profile_start.txt
+	dos2unix KioskTiger.service
+	dos2unix kiosktiger.sh
+	dos2unix kiosktiger.conf
+	cat profile_start.txt >> ~/.profile
+	cp vimrc ~/.vimrc
+	cp KioskTiger.html ~/KioskTiger
+	cp kiosktiger.sh ~/KioskTiger
+	sudo chmod 755 kiosktiger.sh
+	cp kiosktiger.sh ~/KioskTiger
+	cp KioskTiger.conf ~/KioskTiger
 
-	sudo cp /home/pi/work/KioskTiger/KisokTiger.service /etc/systemd/system/
+	sudo cp KisokTiger.service /etc/systemd/system/
 	sudo systemctl enable KioskTiger.service
 	sudo systemctl start KioskTiger.service
 

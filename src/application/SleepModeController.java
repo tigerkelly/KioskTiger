@@ -59,7 +59,20 @@ public class SleepModeController implements Initializable {
 		robot = new Robot();
 		robot.mouseMove(0, 0);
 		
-		btnCute.setText("KioskTiger\nKelly Wiles\n" + kg.appVersion);
+		if (kg.sleepIconText != null) {
+			kg.sleepIconText = kg.sleepIconText.replace("$n", "\n");
+			System.out.println(kg.sleepIconText);
+		}
+		
+		if (kg.sleepIconText.contains("$v") == true) {
+			kg.sleepIconText = kg.sleepIconText.replace("$v", kg.appVersion);
+		}
+		
+		btnCute.setText(kg.sleepIconText);
+		
+		if (kg.sleepIcon != null) {
+			ivCute.setImage(kg.sleepIcon);
+		}
 		
 		if (kg.kioskMsg != null)
 			lblMessage.setText(kg.kioskMsg);
@@ -90,7 +103,7 @@ public class SleepModeController implements Initializable {
 	}
 	
 	// Move button around screen.
-    Timeline timeline = new Timeline(new KeyFrame(Duration.millis(20), new EventHandler<ActionEvent>() {
+    Timeline timeline = new Timeline(new KeyFrame(Duration.millis(40), new EventHandler<ActionEvent>() {
 
         double deltaX = 2;
         double deltaY = 2;

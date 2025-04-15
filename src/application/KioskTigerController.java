@@ -20,6 +20,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Cursor;
+import javafx.scene.image.Image;
 import javafx.scene.input.TouchEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -41,8 +42,6 @@ public class KioskTigerController implements Initializable {
     private WebView webView;
     
     private Robot robot;
-    private String kioskHtml = null;
-    private String kioskUrl = null;
     private KtGlobal kg = KtGlobal.getInstance();
     
     @FXML
@@ -68,19 +67,31 @@ public class KioskTigerController implements Initializable {
 		
 		loadConfig();		// Load kiosktiger.conf file.
 		
-		if (kioskHtml != null) {		// local web pages.
+		if (kg.kioskHtml != null) {		// local web pages.
 			String html = null;
 			
-			html = readResource(kioskHtml);
+			html = readResource(kg.kioskHtml);
 			
 			if (html != null) {
 				webView.getEngine().loadContent(html, "text/html");
 			}
-		} else if (kioskUrl != null) {		// remote web site.
-			webView.getEngine().load(kioskUrl);
+		} else if (kg.kioskUrl != null) {		// remote web site.
+			webView.getEngine().load(kg.kioskUrl);
 		} else {
 			System.out.println("No KIOSKHTML or KIOSKURL key/value pair found in kiosktiger.conf.");
 		}
+		
+		if (kg.pageZoom != null) {
+			double d = Double.parseDouble(kg.pageZoom);
+			webView.setZoom(d);
+		}
+		
+		if (kg.fontScale != null) {
+			double d = Double.parseDouble(kg.fontScale);
+			webView.setFontScale(d);
+		}
+		
+		System.out.println("scale: " + webView.getFontScale());
 		
 		if (kg.sleepTime > 0) {
 			kg.sleepTask = new Timeline(new KeyFrame(Duration.seconds(kg.delayTime), new EventHandler<ActionEvent>() {
@@ -130,10 +141,11 @@ public class KioskTigerController implements Initializable {
     		String[] a = config.split("\n");
     		
     		for (int x = 0; x < a.length; x++) {
+    			
     			if (a[x].toLowerCase().startsWith("kioskhtml=") == true) {
-    				kioskHtml = a[x].substring(10).trim();
+    				kg.kioskHtml = a[x].substring(10).trim();
     			} else if (a[x].toLowerCase().startsWith("kioskurl=") == true) {
-    				kioskUrl = a[x].substring(9).trim();
+    				kg.kioskUrl = a[x].substring(9).trim();
     			} else if (a[x].toLowerCase().startsWith("sleeptime=") == true) {
     	    		kg.sleepTime = Integer.parseInt(a[x].substring(10).trim());
     			} else if (a[x].toLowerCase().startsWith("delaytime=") == true) {
@@ -142,6 +154,22 @@ public class KioskTigerController implements Initializable {
         			kg.kioskMsg = a[x].substring(9).trim();
     			} else if (a[x].toLowerCase().startsWith("txtcolor=") == true) {
         			kg.txtColor = a[x].substring(9).trim();
+    			} else if (a[x].toLowerCase().startsWith("pagezoom=") == true) {
+        			kg.pageZoom = a[x].substring(9).trim();
+    			} else if (a[x].toLowerCase().startsWith("fontscale=") == true) {
+        			kg.fontScale = a[x].substring(10).trim();
+    			} else if (a[x].toLowerCase().startsWith("useragent=") == true) {
+        			kg.userAgent = a[x].substring(10).trim();
+    			} else if (a[x].toLowerCase().startsWith("sleepicon=") == true) {
+					try {
+						String icon = a[x].substring(10).trim();
+						FileInputStream is = new FileInputStream(icon);
+						kg.sleepIcon = new Image(is);
+					} catch (FileNotFoundException e) {
+						e.printStackTrace();
+					}
+    			} else if (a[x].toLowerCase().startsWith("sleepicontext=") == true) {
+        			kg.sleepIconText = a[x].substring(14).trim();
     			}
     		}
     		

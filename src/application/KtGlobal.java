@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -20,7 +21,7 @@ public class KtGlobal {
 	}
 	
 	private void initGlobals() {
-		appVersion = "1.1.0";
+		appVersion = "1.2.0";
 		
 		sceneNav = new SceneNav();
 	}
@@ -39,6 +40,13 @@ public class KtGlobal {
 	public String kioskMsg = null;
 	public String txtColor = null;
 	public Timeline sleepTask = null;
+	public String kioskHtml = null;
+    public String kioskUrl = null;
+    public String pageZoom = null;
+    public String fontScale = null;
+    public String userAgent = null;
+    public Image sleepIcon = null;
+    public String sleepIconText = null;
 	
 	public static KtGlobal getInstance() {
 		// return SingletonHolder.singleton;
