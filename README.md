@@ -55,8 +55,10 @@ Create a directory call KioskTiger in your home directory.
 	cp vimrc ~/.vimrc
 	cp KioskTiger.html ~/KioskTiger
 	cp kiosktiger.sh ~/KioskTiger
+	cp kiosktiger.jar ~/KioskTiger
 	sudo chmod 755 kiosktiger.sh
 	cp kiosktiger.sh ~/KioskTiger
+	chmod +x ~/KioskTiger/kiosktiger.sh
 	cp kiosktiger.conf ~/KioskTiger
 
 	sudo cp KioskTiger.service /etc/systemd/system/
