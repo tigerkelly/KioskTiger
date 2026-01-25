@@ -41,9 +41,9 @@ Create a work directory.
 	git clone https://github.com/tigerkelly/KioskTiger.git
 	cd KioskTiger
 	
-Create home directory for KisokTiger.
+Create home directory for KioskTiger.
 
-	mkdir ~/KisokTiger
+	mkdir ~/KioskTiger
 	
 Create a directory call KioskTiger in your home directory.
 
@@ -59,7 +59,7 @@ Create a directory call KioskTiger in your home directory.
 	cp kiosktiger.sh ~/KioskTiger
 	cp KioskTiger.conf ~/KioskTiger
 
-	sudo cp KisokTiger.service /etc/systemd/system/
+	sudo cp KioskTiger.service /etc/systemd/system/
 	sudo systemctl enable KioskTiger.service
 	sudo systemctl start KioskTiger.service
 
