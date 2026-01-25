@@ -41,9 +41,9 @@ Create a work directory.
 	git clone https://github.com/tigerkelly/KioskTiger.git
 	cd KioskTiger
 	
-Create home directory for KisokTiger.
+Create home directory for KioskTiger.
 
-	mkdir ~/KisokTiger
+	mkdir ~/KioskTiger
 	
 Create a directory call KioskTiger in your home directory.
 
@@ -55,11 +55,11 @@ Create a directory call KioskTiger in your home directory.
 	cp vimrc ~/.vimrc
 	cp KioskTiger.html ~/KioskTiger
 	cp kiosktiger.sh ~/KioskTiger
-	sudo chmod 755 kiosktiger.sh
-	cp kiosktiger.sh ~/KioskTiger
-	cp KioskTiger.conf ~/KioskTiger
+	cp kiosktiger.jar ~/KioskTiger
+	cp kiosktiger.conf ~/KioskTiger
+	chmod +x ~/KioskTiger/kiosktiger.sh
 
-	sudo cp KisokTiger.service /etc/systemd/system/
+	sudo cp KioskTiger.service /etc/systemd/system/
 	sudo systemctl enable KioskTiger.service
 	sudo systemctl start KioskTiger.service
 
@@ -70,4 +70,3 @@ The code currently only understands the two config items but you can add more if
 Edit the KioskTiger.conf file to define the operating parameters.
 If you want KioskTiger.jar to load a web page like KioskTiger.html then make sure the config file
 has an uncommented key/value pair call KIOSKHTML.
-If you want the KioskTiger.jar to load a remote web site then comment out KIOSKHTML and set KIOSKURL.
