@@ -57,7 +57,7 @@ Create a directory call KioskTiger in your home directory.
 	cp kiosktiger.sh ~/KioskTiger
 	sudo chmod 755 kiosktiger.sh
 	cp kiosktiger.sh ~/KioskTiger
-	cp KioskTiger.conf ~/KioskTiger
+	cp kiosktiger.conf ~/KioskTiger
 
 	sudo cp KioskTiger.service /etc/systemd/system/
 	sudo systemctl enable KioskTiger.service
