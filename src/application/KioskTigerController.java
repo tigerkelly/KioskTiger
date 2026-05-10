@@ -176,13 +176,32 @@ public class KioskTigerController implements Initializable {
     			} else if (a[x].toLowerCase().startsWith("useragent=") == true) {
         			kg.userAgent = a[x].substring(10).trim();
     			} else if (a[x].toLowerCase().startsWith("sleepicon=") == true) {
-					try {
-						String icon = a[x].substring(10).trim();
-						FileInputStream is = new FileInputStream(icon);
-						kg.sleepIcon = new Image(is);
-					} catch (FileNotFoundException e) {
-						e.printStackTrace();
-					}
+    				String icon = a[x].substring(10).trim();
+
+    			    // "default" is a sentinel meaning "use the bundled CuteTiger.png"
+    			    if (icon.equalsIgnoreCase("default") || icon.isEmpty()) {
+    			        kg.sleepIcon = new Image(getClass().getResourceAsStream("/images/CuteTiger.png"));
+    			    } else {
+    			        File iconFile = new File(icon);
+    			        if (iconFile.exists()) {
+    			            try {
+    			                kg.sleepIcon = new Image(new FileInputStream(iconFile));
+    			            } catch (FileNotFoundException e) {
+    			                System.out.println("SLEEPICON file not found: " + icon + ", falling back to default.");
+    			                kg.sleepIcon = new Image(getClass().getResourceAsStream("/images/CuteTiger.png"));
+    			            }
+    			        } else {
+    			            System.out.println("SLEEPICON file not found: " + icon + ", falling back to default.");
+    			            kg.sleepIcon = new Image(getClass().getResourceAsStream("/images/CuteTiger.png"));
+    			        }
+    			    }
+//					try {
+//						String icon = a[x].substring(10).trim();
+//						FileInputStream is = new FileInputStream(icon);
+//						kg.sleepIcon = new Image(is);
+//					} catch (FileNotFoundException e) {
+//						e.printStackTrace();
+//					}
     			} else if (a[x].toLowerCase().startsWith("sleepicontext=") == true) {
         			kg.sleepIconText = a[x].substring(14).trim();
     			}

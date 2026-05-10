@@ -61,7 +61,7 @@ public class SleepModeController implements Initializable {
 		
 		if (kg.sleepIconText != null) {
 			kg.sleepIconText = kg.sleepIconText.replace("$n", "\n");
-			System.out.println(kg.sleepIconText);
+//			System.out.println(kg.sleepIconText);
 		}
 		
 		if (kg.sleepIconText != null && kg.sleepIconText.contains("$v") == true) {
