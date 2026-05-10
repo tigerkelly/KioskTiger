@@ -64,7 +64,7 @@ public class SleepModeController implements Initializable {
 			System.out.println(kg.sleepIconText);
 		}
 		
-		if (kg.sleepIconText.contains("$v") == true) {
+		if (kg.sleepIconText != null && kg.sleepIconText.contains("$v") == true) {
 			kg.sleepIconText = kg.sleepIconText.replace("$v", kg.appVersion);
 		}
 		

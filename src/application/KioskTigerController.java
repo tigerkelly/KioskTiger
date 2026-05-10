@@ -67,6 +67,8 @@ public class KioskTigerController implements Initializable {
 		
 		loadConfig();		// Load kiosktiger.conf file.
 		
+		webView.getEngine().setUserAgent(kg.userAgent);
+		
 		if (kg.kioskHtml != null) {		// local web pages.
 			String html = null;
 			
@@ -91,7 +93,7 @@ public class KioskTigerController implements Initializable {
 			webView.setFontScale(d);
 		}
 		
-		System.out.println("scale: " + webView.getFontScale());
+//		System.out.println("scale: " + webView.getFontScale());
 		
 		if (kg.sleepTime > 0) {
 			kg.sleepTask = new Timeline(new KeyFrame(Duration.seconds(kg.delayTime), new EventHandler<ActionEvent>() {
@@ -101,13 +103,15 @@ public class KioskTigerController implements Initializable {
 			    	long d = new Date().getTime() / 1000;
 			    	
 			    	if ((d - kg.lastAction) > kg.sleepTime && kg.sleepMode == false) {
-						Platform.runLater(new Runnable() {
-						    @Override
-						    public void run() {
-						    	kg.sleepMode = true;
-						    	sleepNow();
-						    }
-						});
+//						Platform.runLater(new Runnable() {
+//						    @Override
+//						    public void run() {
+//						    	kg.sleepMode = true;
+//						    	sleepNow();
+//						    }
+//						});
+			    		kg.sleepMode = true;
+				    	sleepNow();
 					}
 			    }
 			}));
@@ -147,9 +151,17 @@ public class KioskTigerController implements Initializable {
     			} else if (a[x].toLowerCase().startsWith("kioskurl=") == true) {
     				kg.kioskUrl = a[x].substring(9).trim();
     			} else if (a[x].toLowerCase().startsWith("sleeptime=") == true) {
-    	    		kg.sleepTime = Integer.parseInt(a[x].substring(10).trim());
+    				try {
+    					kg.sleepTime = Integer.parseInt(a[x].substring(10).trim());
+    				} catch (NumberFormatException  nfe) {
+    					
+    				}
     			} else if (a[x].toLowerCase().startsWith("delaytime=") == true) {
-    	    	    kg.delayTime = Integer.parseInt(a[x].substring(10).trim());
+    				try {
+    					kg.delayTime = Integer.parseInt(a[x].substring(10).trim());
+    				} catch (NumberFormatException  nfe) {
+    					
+    				}
     			} else if (a[x].toLowerCase().startsWith("kioskmsg=") == true) {
         			kg.kioskMsg = a[x].substring(9).trim();
     			} else if (a[x].toLowerCase().startsWith("txtcolor=") == true) {
