@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-logf=/home/pi/KioskTiger/java_log.log
+logf=/home/pi/KioskTiger/kiosktiger.log
 
 echo "Starting `date`" > ${logf}
 
