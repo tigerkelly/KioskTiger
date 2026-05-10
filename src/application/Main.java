@@ -51,6 +51,10 @@ public class Main extends Application {
 		if (kg.sleepTask != null) {
 			kg.sleepTask.stop();
 		}
+		
+		if (kg.configWatcher != null) {
+			kg.configWatcher.stop();
+		}
 
 		SceneInfo si = kg.sceneNav.fxmls.get(kg.scenePeek());
 		if (si != null && si.controller instanceof RefreshScene) {

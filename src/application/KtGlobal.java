@@ -47,6 +47,8 @@ public class KtGlobal {
     public String userAgent = null;
     public Image sleepIcon = null;
     public String sleepIconText = null;
+    
+    public ConfigWatcher configWatcher = null;
 	
 	public static KtGlobal getInstance() {
 		// return SingletonHolder.singleton;

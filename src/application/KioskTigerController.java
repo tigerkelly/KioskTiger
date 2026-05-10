@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Date;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.concurrent.RejectedExecutionException;
 
@@ -119,6 +120,8 @@ public class KioskTigerController implements Initializable {
 			kg.sleepTask.setCycleCount(Timeline.INDEFINITE);
 			kg.sleepTask.play();
 		}
+		
+		startConfigWatcher();   // <-- add at the very end
 	}
 	
 	public boolean loadConfig() {
@@ -189,6 +192,110 @@ public class KioskTigerController implements Initializable {
     	}
 		
 		return false;
+	}
+	
+	private void startConfigWatcher() {
+	    kg.configWatcher = new ConfigWatcher("kiosktiger.conf", this::onConfigChanged);
+	    kg.configWatcher.start();
+	}
+	
+	private void onConfigChanged() {
+	    // Snapshot values before reload so we can diff them
+	    String oldHtml    = kg.kioskHtml;
+	    String oldUrl     = kg.kioskUrl;
+	    double oldZoom    = kg.pageZoom    != null ? Double.parseDouble(kg.pageZoom)    : 1.0;
+	    double oldScale   = kg.fontScale   != null ? Double.parseDouble(kg.fontScale)   : 1.0;
+	    int    oldSleep   = kg.sleepTime;
+	    int    oldDelay   = kg.delayTime;
+	    String oldAgent   = kg.userAgent;
+
+	    boolean error = loadConfig();    // your existing method — reloads into KtGlobal
+	    if (error) {
+	        System.out.println("ConfigWatcher: reload failed, keeping current settings.");
+	        return;
+	    }
+
+	    System.out.println("ConfigWatcher: config reloaded successfully.");
+
+	    Platform.runLater(() -> applyConfigChanges(
+	        oldHtml, oldUrl, oldZoom, oldScale, oldSleep, oldDelay, oldAgent
+	    ));
+	}
+	
+	private void applyConfigChanges(
+	        String oldHtml,  String oldUrl,
+	        double oldZoom,  double oldScale,
+	        int    oldSleep, int    oldDelay,
+	        String oldAgent) {
+
+	    boolean pageChanged = !Objects.equals(kg.kioskHtml, oldHtml)
+	                       || !Objects.equals(kg.kioskUrl,  oldUrl);
+
+	    boolean zoomChanged  = kg.pageZoom  != null && Double.parseDouble(kg.pageZoom)  != oldZoom;
+	    boolean scaleChanged = kg.fontScale != null && Double.parseDouble(kg.fontScale) != oldScale;
+	    boolean agentChanged = !Objects.equals(kg.userAgent, oldAgent);
+
+	    boolean sleepChanged = kg.sleepTime != oldSleep || kg.delayTime != oldDelay;
+
+	    // ── Apply zoom / font scale ───────────────────────────────────────────────
+	    if (zoomChanged) {
+	        double z = Double.parseDouble(kg.pageZoom);
+	        webView.setZoom(z);
+	        System.out.println("ConfigWatcher: zoom → " + z);
+	    }
+
+	    if (scaleChanged) {
+	        double s = Double.parseDouble(kg.fontScale);
+	        webView.setFontScale(s);
+	        System.out.println("ConfigWatcher: fontScale → " + s);
+	    }
+
+	    // ── Apply user agent (requires page reload to take effect) ────────────────
+	    if (agentChanged && kg.userAgent != null) {
+	        webView.getEngine().setUserAgent(kg.userAgent);
+	        System.out.println("ConfigWatcher: userAgent → " + kg.userAgent);
+	        pageChanged = true;   // force reload so the server sees the new UA
+	    }
+
+	    // ── Reload page if URL/HTML changed ───────────────────────────────────────
+	    if (pageChanged) {
+	        if (kg.kioskHtml != null) {
+	            String html = readResource(kg.kioskHtml);
+	            if (html != null) {
+	                webView.getEngine().loadContent(html, "text/html");
+	                System.out.println("ConfigWatcher: reloaded local HTML → " + kg.kioskHtml);
+	            }
+	        } else if (kg.kioskUrl != null) {
+	            webView.getEngine().load(kg.kioskUrl);
+	            System.out.println("ConfigWatcher: navigated to → " + kg.kioskUrl);
+	        }
+	    }
+
+	    // ── Restart sleep timeline if timing changed ───────────────────────────────
+	    if (sleepChanged) {
+	        if (kg.sleepTask != null) {
+	            kg.sleepTask.stop();
+	            kg.sleepTask = null;
+	        }
+
+	        if (kg.sleepTime > 0) {
+	            kg.sleepTask = new Timeline(new KeyFrame(
+	                Duration.seconds(kg.delayTime),
+	                event -> {
+	                    long now = new Date().getTime() / 1000;
+	                    if ((now - kg.lastAction) > kg.sleepTime && !kg.sleepMode) {
+	                        Platform.runLater(() -> {
+	                            kg.sleepMode = true;
+	                            sleepNow();
+	                        });
+	                    }
+	                }
+	            ));
+	            kg.sleepTask.setCycleCount(Timeline.INDEFINITE);
+	            kg.sleepTask.play();
+	            System.out.println("ConfigWatcher: sleep timer restarted → " + kg.sleepTime + "s");
+	        }
+	    }
 	}
 	
 	public String readResource(String resourcePath) {
